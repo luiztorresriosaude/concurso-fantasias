@@ -3,106 +3,207 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Concurso de Fantasias — Halloween DAF</title>
+<title>Concurso de Fantasias — Halloween DAF 2026</title>
+<meta name="theme-color" content="#160a2b">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tilt+Neon&family=Barlow+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#F3EEF6; --surface:#FFFFFF; --ink:#2A1736; --muted:#6B5878; --line:#DCCFE5;
-  --accent:#D9620F; --accent-ink:#FFFFFF; --accent-soft:#FBE3CF; --moss:#2F7A5B; --danger:#B3261E;
-  --display:"Pirata One", "Palatino Linotype", Georgia, serif;
-  --body:"Bricolage Grotesque", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  color-scheme:light;
-}
-@media (prefers-color-scheme: dark){
-  :root{
-    --bg:#170C21; --surface:#24152F; --ink:#F1E9F5; --muted:#B4A2C2; --line:#3B2752;
-    --accent:#F08A2E; --accent-ink:#1A0D02; --accent-soft:#3D2412; --moss:#6CCB9F; --danger:#FF8A80;
-    color-scheme:dark;
-  }
+  --noite:#120822; --noite-2:#1d0e36; --violeta:#3a1a66; --card:#1c0f33; --card-2:#24143f;
+  --rosa:#ff4fd8; --rosa-claro:#ffd6f7; --lilas:#b44bff; --ouro:#ffb347; --laranja:#ff7a1a;
+  --lima:#c3ff3d; --lima-texto:#dcff80; --texto:#f3eaff; --suave:#bba8d9; --linha:rgba(255,255,255,.12); --erro:#ff8a9a;
+  --neon:"Tilt Neon", "Arial Rounded MT Bold", system-ui, sans-serif;
+  --cond:"Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  color-scheme:dark;
 }
 *,*::before,*::after{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased;
-  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{background:var(--noite)}
+body{margin:0;min-height:100vh;color:var(--texto);font-family:var(--cond);font-size:19px;line-height:1.45;-webkit-font-smoothing:antialiased;
+  background:linear-gradient(180deg, #120822 0%, #170a2a 60%, #1d0e36 100%) fixed;
+  padding-bottom:env(safe-area-inset-bottom,0px)}
 img{max-width:100%;display:block}
-button,input{font:inherit;color:inherit}
-:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-.wrap{max-width:1080px;margin:0 auto;padding:1.25rem 1rem 4rem}
-header.top{padding:1.5rem 0 1rem}
-.kicker{color:var(--muted);font-size:.95rem;margin:0}
-h1{font-family:var(--display);font-weight:400;font-size:clamp(3rem,13vw,6.5rem);line-height:.9;margin:.2rem 0 .6rem}
-h2{font-family:var(--display);font-weight:400;font-size:clamp(2rem,7vw,3rem);line-height:1;margin:0 0 .4rem}
-h3{font-size:1.05rem;margin:0}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--lima);outline-offset:3px}
+
+/* ---------- Topo: céu, lua, orla ---------- */
+.hero{position:relative;overflow:hidden;padding:calc(1.5rem + env(safe-area-inset-top,0px)) 0 0;text-align:center;
+  background:
+    radial-gradient(1.5px 1.5px at 12% 18%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 28% 8%, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 47% 22%, #e9dcff 50%, transparent 51%),
+    radial-gradient(1px 1px at 63% 12%, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 78% 26%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 88% 9%, #e9dcff 50%, transparent 51%),
+    radial-gradient(1px 1px at 35% 34%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 93% 38%, #fff 50%, transparent 51%),
+    linear-gradient(180deg, #160a2b 0%, #2b1352 55%, #4a2276 100%)}
+.moon{position:absolute;top:calc(1rem + env(safe-area-inset-top,0px));left:3%;width:clamp(52px,12vw,110px);aspect-ratio:1;border-radius:50%;
+  background:
+    radial-gradient(circle at 62% 40%, rgba(150,130,190,.55) 0 9%, transparent 10%),
+    radial-gradient(circle at 38% 64%, rgba(150,130,190,.45) 0 12%, transparent 13%),
+    radial-gradient(circle at 30% 30%, rgba(150,130,190,.35) 0 6%, transparent 7%),
+    radial-gradient(circle at 40% 38%, #fbf7ff 0%, #ddd0f3 55%, #a996cf 100%);
+  box-shadow:0 0 40px 8px rgba(214,196,255,.35), 0 0 120px 30px rgba(180,75,255,.18)}
+.bats{position:absolute;top:calc(1.2rem + env(safe-area-inset-top,0px));right:max(3%, calc(50% - 540px));width:clamp(90px,18vw,170px);fill:#0c0517;opacity:.9}
+.marca{position:relative;display:inline-flex;align-items:center;gap:.5rem;margin:0 0 .4rem;
+  font-family:var(--cond);font-weight:700;font-size:clamp(1.6rem,6vw,2.4rem);letter-spacing:.04em;color:var(--ouro);
+  text-shadow:0 0 6px rgba(255,179,71,.8), 0 0 18px rgba(255,122,26,.55)}
+.marca svg{width:2.2em;height:auto;stroke:var(--ouro);fill:none;stroke-width:2.2;stroke-linecap:round;filter:drop-shadow(0 0 4px rgba(255,179,71,.8))}
+.marca svg.dir{transform:scaleX(-1)}
+h1{position:relative;margin:0;padding:0 1rem;font-family:var(--neon);font-weight:400;line-height:.95;text-transform:uppercase}
+h1 .rosa{display:block;font-size:clamp(2.6rem,11.5vw,6.2rem);letter-spacing:.02em;color:var(--rosa-claro);
+  text-shadow:0 0 2px #fff, 0 0 8px var(--rosa), 0 0 18px var(--rosa), 0 0 38px var(--lilas), 0 0 70px var(--lilas)}
+h1 .ouro{display:block;font-size:clamp(3.4rem,15vw,8rem);color:#fff3dc;margin-top:.05em;
+  text-shadow:0 0 2px #fff, 0 0 8px var(--ouro), 0 0 20px var(--laranja), 0 0 44px var(--laranja)}
+.skyline{display:block;width:100%;height:clamp(140px,24vw,240px);margin-top:-1rem}
+
+/* acende uma vez, como letreiro */
+@media (prefers-reduced-motion: no-preference){
+  h1 .rosa{animation:acende 1.6s ease-out both}
+  h1 .ouro{animation:acende 1.6s .35s ease-out both}
+  @keyframes acende{0%{opacity:.15;text-shadow:none}12%{opacity:1}16%{opacity:.3}22%{opacity:1}30%{opacity:.55}38%,100%{opacity:1}}
+}
+
+/* ---------- Caixa da premiação ---------- */
+.premiacao{position:relative;width:calc(100% - 2rem);max-width:640px;margin:-1.4rem auto 0;padding:1.1rem 1.2rem 1.2rem;text-align:center;
+  background:rgba(14,7,26,.88);border:3px solid var(--lima);border-radius:18px;
+  box-shadow:0 0 10px rgba(195,255,61,.75), 0 0 34px rgba(195,255,61,.35), inset 0 0 18px rgba(195,255,61,.22)}
+.premiacao h2{margin:0;font-family:var(--cond);font-weight:700;font-size:clamp(1.7rem,6.4vw,2.4rem);line-height:1.05;text-transform:uppercase;
+  color:var(--lima-texto);text-shadow:0 0 6px rgba(195,255,61,.8), 0 0 18px rgba(195,255,61,.45)}
+.premios{display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;list-style:none;padding:0;margin:.9rem 0 0}
+.premios li{display:flex;flex-direction:column;align-items:center;padding:.35rem 0;border-left:1px solid rgba(195,255,61,.3)}
+.premios li:first-child{border-left:0}
+.premios span{font-size:.95rem;color:var(--suave)}
+.premios strong{font-size:clamp(1.35rem,5vw,1.7rem);font-weight:700;color:#fff;text-shadow:0 0 8px rgba(195,255,61,.6)}
+
+/* ---------- Conteúdo ---------- */
+.wrap{max-width:1080px;margin:0 auto;padding:1.6rem 1rem 4rem}
+.steps{display:flex;gap:.5rem;list-style:none;padding:0;margin:0 0 2rem;justify-content:center}
+.steps li{flex:1;max-width:200px;text-align:center;padding:.45rem .5rem;border-radius:999px;border:1.5px solid var(--linha);color:var(--suave);font-size:1rem;font-weight:600}
+.steps li.on{color:#fff;border-color:var(--rosa);background:rgba(255,79,216,.14);box-shadow:0 0 12px rgba(255,79,216,.45)}
+.steps li.done{color:var(--texto)}
+.steps b{font-weight:700;margin-right:.3rem;color:var(--ouro)}
+main h2{font-family:var(--neon);font-weight:400;font-size:clamp(2rem,7vw,3rem);line-height:1.05;margin:0 0 .4rem;color:var(--rosa-claro);
+  text-shadow:0 0 6px var(--rosa), 0 0 22px rgba(180,75,255,.7)}
 p{margin:.3rem 0 0;max-width:62ch}
-.lead{color:var(--muted)}
-.steps{display:flex;gap:.25rem;list-style:none;padding:0;margin:1rem 0 2rem;border-bottom:1px solid var(--line)}
-.steps li{flex:1;padding:.5rem 0 .6rem;color:var(--muted);font-size:.92rem;border-bottom:3px solid transparent;margin-bottom:-1px}
-.steps li.on{color:var(--ink);font-weight:600;border-color:var(--accent)}
-.steps li.done{color:var(--ink)}
-.steps b{font-weight:800;margin-right:.35rem}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;border:0;border-radius:999px;padding:.8rem 1.4rem;font-weight:600;cursor:pointer;background:var(--accent);color:var(--accent-ink);min-height:48px}
-.btn:disabled{opacity:.5;cursor:not-allowed}
-.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
-.btn.small{padding:.45rem .9rem;min-height:36px;font-size:.9rem}
-.btn.danger{background:transparent;color:var(--danger);box-shadow:inset 0 0 0 1.5px currentColor}
-.panel{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:1.4rem}
-.notice{padding:1rem 1.2rem;border-radius:14px;background:var(--accent-soft);margin:1rem 0}
-.status{min-height:1.5em;color:var(--muted);font-size:.92rem;margin-top:.6rem}
-.status.err{color:var(--danger)}
-.status.ok{color:var(--moss)}
-.row{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
-label.field{display:block;margin-bottom:1rem}
-label.field span{display:block;font-weight:600;font-size:.95rem;margin-bottom:.3rem}
-input[type=text],input[type=password]{width:100%;padding:.75rem .9rem;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);min-height:48px}
-input[type=text]:focus,input[type=password]:focus{border-color:var(--accent);outline:none}
-.drop{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;aspect-ratio:3/4;border:2px dashed var(--line);border-radius:18px;background:var(--bg);cursor:pointer;overflow:hidden;color:var(--muted);padding:1rem}
-.drop:hover{border-color:var(--accent)}
-.drop img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.drop .big{font-family:var(--display);font-size:2.2rem;color:var(--ink);line-height:1}
-.drop input{position:absolute;opacity:0;pointer-events:none}
-.stats{display:flex;gap:2rem;flex-wrap:wrap;margin:1rem 0}
-.stats div{font-size:.9rem;color:var(--muted)}
-.stats strong{display:block;font-family:var(--display);font-size:2.4rem;font-weight:400;color:var(--ink);line-height:1}
-.progress{display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap;margin-bottom:1.2rem}
-.bar{flex-basis:100%;height:6px;border-radius:6px;background:var(--line);overflow:hidden}
-.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .3s}
-.grid{display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;display:flex;flex-direction:column}
-.card .photo{position:relative;aspect-ratio:3/4;background:var(--line)}
+.lead{color:var(--suave);font-size:1.15rem}
+main > h2, main > .lead{text-align:center;margin-left:auto;margin-right:auto}
+.notice{padding:1rem 1.2rem;border-radius:14px;border:1.5px solid var(--rosa);background:rgba(255,79,216,.1);margin:1rem auto;max-width:640px;text-align:center}
+.status{min-height:1.4em;color:var(--suave);font-size:1rem}
+.status.err{color:var(--erro)}
+.status.ok{color:var(--lima-texto)}
+
+/* espera */
+.espera{text-align:center;padding:1rem 0}
+.contador{display:inline-flex;flex-direction:column;align-items:center;margin-top:1.4rem;padding:1rem 2rem;border-radius:20px;border:1.5px solid rgba(255,179,71,.5);background:rgba(255,179,71,.06)}
+.contador strong{font-family:var(--neon);font-weight:400;font-size:4rem;line-height:1;color:#fff3dc;text-shadow:0 0 8px var(--ouro), 0 0 26px var(--laranja)}
+.contador span{color:var(--suave)}
+
+/* votação */
+.progress{display:flex;align-items:baseline;justify-content:center;gap:.8rem;flex-wrap:wrap;margin:1.2rem auto 1.6rem;max-width:640px;text-align:center}
+.progress strong{font-size:1.15rem}
+.bar{flex-basis:100%;height:8px;border-radius:8px;background:rgba(255,255,255,.1);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--rosa),var(--ouro));box-shadow:0 0 10px var(--rosa);transition:width .3s}
+.grid{display:grid;gap:1.4rem;grid-template-columns:repeat(auto-fill,minmax(270px,1fr))}
+.card{background:linear-gradient(180deg,var(--card-2),var(--card));border:1px solid rgba(255,79,216,.28);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;
+  box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.card .photo{position:relative;aspect-ratio:3/4;background:#120822}
 .card .photo img{width:100%;height:100%;object-fit:cover}
-.card .tag{position:absolute;left:.7rem;top:.7rem;background:var(--accent);color:var(--accent-ink);font-weight:800;border-radius:999px;padding:.15rem .7rem;font-size:.9rem}
+.card .tag{position:absolute;left:.7rem;top:.7rem;background:var(--ouro);color:#2a1300;font-weight:700;border-radius:999px;padding:.1rem .75rem;font-size:1rem;box-shadow:0 0 12px rgba(255,179,71,.7)}
 .card .body{padding:.9rem 1rem 1.1rem}
-.costume{font-family:var(--display);font-size:1.7rem;line-height:1.05}
-.who{color:var(--muted);font-size:.95rem}
-.score{display:grid;grid-template-columns:repeat(10,1fr);gap:.25rem;margin-top:.8rem}
-.score button{border:1.5px solid var(--line);background:transparent;border-radius:10px;min-height:40px;padding:0;font-weight:600;cursor:pointer;font-size:.95rem}
-.score button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-.score button.under{border-color:var(--accent)}
-.podium{display:grid;gap:1.25rem;grid-template-columns:1fr;margin-bottom:2rem}
-@media (min-width:760px){.podium{grid-template-columns:1fr 1.25fr 1fr;align-items:end}.podium .p1{order:2}.podium .p2{order:1}.podium .p3{order:3}}
-.place{font-family:var(--display);font-size:3rem;line-height:1;color:var(--accent)}
-.p1 .place{font-size:4.2rem}
-.avg{font-weight:800;font-size:1.3rem}
-.rank{list-style:none;padding:0;margin:0;border-top:1px solid var(--line)}
-.rank li{display:grid;grid-template-columns:2.5rem 56px 1fr auto;gap:.8rem;align-items:center;padding:.7rem 0;border-bottom:1px solid var(--line)}
-.rank img{width:56px;height:72px;object-fit:cover;border-radius:10px;background:var(--line)}
-.rank .n{font-weight:800;color:var(--muted)}
-@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+.costume{font-weight:700;font-size:1.7rem;line-height:1.05;color:#fff}
+.who{color:var(--suave);font-size:1rem}
+.score{display:grid;grid-template-columns:repeat(10,1fr);gap:.28rem;margin-top:.9rem}
+.score button{border:1.5px solid rgba(255,255,255,.18);background:rgba(255,255,255,.03);border-radius:10px;min-height:42px;padding:0;font-weight:700;font-size:1.05rem;cursor:pointer;color:var(--texto)}
+.score button.under{border-color:rgba(255,79,216,.75);color:var(--rosa-claro)}
+.score button[aria-pressed="true"]{background:var(--rosa);border-color:var(--rosa);color:#2b0026;box-shadow:0 0 14px var(--rosa)}
+
+/* resultado */
+.podium{display:grid;gap:1.4rem;grid-template-columns:1fr;margin-bottom:2rem}
+@media (min-width:760px){.podium{grid-template-columns:1fr 1.2fr 1fr;align-items:end}.podium .p1{order:2}.podium .p2{order:1}.podium .p3{order:3}}
+.podium .p1{border-color:var(--ouro);box-shadow:0 0 22px rgba(255,179,71,.45)}
+.place{font-family:var(--neon);font-weight:400;font-size:3rem;line-height:1;color:#fff3dc;text-shadow:0 0 8px var(--ouro), 0 0 24px var(--laranja)}
+.p1 .place{font-size:4rem}
+.premio{display:inline-block;margin:.4rem 0 .2rem;padding:.1rem .7rem;border-radius:999px;border:1.5px solid var(--lima);color:var(--lima-texto);font-weight:700;font-size:1.05rem;text-shadow:0 0 6px rgba(195,255,61,.6)}
+.avg{font-weight:700;font-size:1.4rem;color:#fff}
+.rank{list-style:none;padding:0;margin:0;border-top:1px solid var(--linha)}
+.rank li{display:grid;grid-template-columns:2.6rem 56px 1fr auto;gap:.8rem;align-items:center;padding:.7rem 0;border-bottom:1px solid var(--linha)}
+.rank img{width:56px;height:72px;object-fit:cover;border-radius:10px;background:#120822}
+.rank .n{font-weight:700;color:var(--suave)}
+
+.teia{position:fixed;bottom:0;width:150px;opacity:.16;pointer-events:none;stroke:#e9dcff;fill:none;stroke-width:1}
+.teia.esq{left:0}.teia.dir{right:0;transform:scaleX(-1)}
+@media (max-width:640px){.teia{width:90px}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 </style>
 
 </head>
 <body>
+<header class="hero">
+  <div class="moon" aria-hidden="true"></div>
+  <svg class="bats" viewBox="0 0 170 70" aria-hidden="true">
+    <path d="M20 30c4-6 9-7 13-3 1-3 3-4 5-1 2-3 4-2 5 1 4-4 9-3 13 3-5-1-8 1-10 5-2-2-4-2-6 0-1-2-3-2-5 0-2-4-6-6-15-5z"/>
+    <path transform="translate(70 4) scale(.75)" d="M20 30c4-6 9-7 13-3 1-3 3-4 5-1 2-3 4-2 5 1 4-4 9-3 13 3-5-1-8 1-10 5-2-2-4-2-6 0-1-2-3-2-5 0-2-4-6-6-15-5z"/>
+    <path transform="translate(108 30) scale(.55)" d="M20 30c4-6 9-7 13-3 1-3 3-4 5-1 2-3 4-2 5 1 4-4 9-3 13 3-5-1-8 1-10 5-2-2-4-2-6 0-1-2-3-2-5 0-2-4-6-6-15-5z"/>
+  </svg>
+  <p class="marca"><svg viewBox="0 0 60 30" aria-hidden="true"><path d="M58 26 C44 24 30 18 18 6"/><path d="M56 20 C44 18 34 13 26 4"/><path d="M54 14 C46 12 40 9 34 2"/><path d="M58 26 C46 28 32 27 20 22"/></svg>DAF<svg viewBox="0 0 60 30" aria-hidden="true" class="dir"><path d="M58 26 C44 24 30 18 18 6"/><path d="M56 20 C44 18 34 13 26 4"/><path d="M54 14 C46 12 40 9 34 2"/><path d="M58 26 C46 28 32 27 20 22"/></svg></p>
+  <h1><span class="rosa">Halloween DAF</span><span class="ouro">2026</span></h1>
+  <svg class="skyline" viewBox="0 0 1200 220" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="mar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a1d63"/><stop offset="1" stop-color="#120822"/></linearGradient>
+      <linearGradient id="reflexo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffb347" stop-opacity=".55"/><stop offset="1" stop-color="#ffb347" stop-opacity="0"/></linearGradient>
+    </defs>
+    <path fill="#2d1650" d="M0 150 C80 120 150 132 230 112 C300 96 350 124 420 128 C520 134 600 118 700 126 C800 134 880 112 960 120 C1060 130 1130 112 1200 118 L1200 220 L0 220Z"/>
+    <path fill="#1a0c30" d="M430 186 C450 150 480 138 505 142 C522 146 532 160 540 172 C548 120 570 78 600 74 C632 72 650 116 662 160 L676 186Z"/>
+    <path fill="#1a0c30" d="M820 186 L880 132 L925 96 L962 52 L978 36 L994 52 L1030 98 L1090 132 L1200 150 L1200 186Z"/>
+    <path fill="#140926" d="M0 186 L0 120 L30 120 L30 100 L58 100 L58 132 L84 132 L84 92 L118 92 L118 140 L150 140 L150 118 L176 118 L176 150 L210 150 L210 186Z"/>
+    <g fill="#ffb347">
+      <rect x="38" y="108" width="4" height="5"/><rect x="46" y="116" width="4" height="5"/><rect x="92" y="100" width="4" height="5"/>
+      <rect x="104" y="112" width="4" height="5"/><rect x="92" y="124" width="4" height="5"/><rect x="158" y="126" width="4" height="5"/>
+      <rect x="10" y="130" width="4" height="5"/><rect x="186" y="158" width="4" height="5"/>
+    </g>
+    <g fill="#ff4fd8"><rect x="64" y="110" width="4" height="5"/><rect x="104" y="128" width="4" height="5"/><rect x="18" y="146" width="4" height="5"/></g>
+    <rect y="186" width="1200" height="34" fill="url(#mar)"/>
+    <g fill="#ffcf7a">
+      <circle cx="240" cy="187" r="1.8"/><circle cx="270" cy="188" r="1.8"/><circle cx="300" cy="187" r="1.8"/><circle cx="330" cy="188" r="1.8"/>
+      <circle cx="360" cy="187" r="1.8"/><circle cx="390" cy="188" r="1.8"/><circle cx="700" cy="187" r="1.8"/><circle cx="730" cy="188" r="1.8"/>
+      <circle cx="760" cy="187" r="1.8"/><circle cx="790" cy="188" r="1.8"/>
+    </g>
+    <g fill="url(#reflexo)">
+      <rect x="238" y="190" width="4" height="22"/><rect x="298" y="190" width="4" height="18"/><rect x="358" y="190" width="4" height="24"/>
+      <rect x="728" y="190" width="4" height="20"/><rect x="788" y="190" width="4" height="16"/>
+    </g>
+  </svg>
+</header>
+
+<section class="premiacao" aria-label="Premiação">
+  <h2>Concurso de fantasias!<br>Premiação em Pix</h2>
+  <ul class="premios">
+    <li><span>1º lugar</span><strong>R$ 300</strong></li>
+    <li><span>2º lugar</span><strong>R$ 100</strong></li>
+    <li><span>3º lugar</span><strong>R$ 50</strong></li>
+  </ul>
+</section>
+
+<svg class="teia esq" viewBox="0 0 150 150" aria-hidden="true">
+  <path d="M0 150 L150 0 M0 150 L150 75 M0 150 L75 0 M0 150 L150 150 M0 150 L0 0"/>
+  <path d="M0 120 Q14 128 21 129 Q30 116 30 120 Q35 140 45 150"/>
+  <path d="M0 85 Q24 98 38 112 Q52 92 70 80 Q78 112 85 150"/>
+  <path d="M0 45 Q36 62 60 90 Q86 58 112 38 Q118 96 125 150"/>
+</svg>
+<svg class="teia dir" viewBox="0 0 150 150" aria-hidden="true">
+  <path d="M0 150 L150 0 M0 150 L150 75 M0 150 L75 0 M0 150 L150 150 M0 150 L0 0"/>
+  <path d="M0 85 Q24 98 38 112 Q52 92 70 80 Q78 112 85 150"/>
+  <path d="M0 45 Q36 62 60 90 Q86 58 112 38 Q118 96 125 150"/>
+</svg>
+
 <div class="wrap">
-  <header class="top">
-    <p class="kicker">Festa de Halloween da DAF</p>
-    <h1>Concurso de Fantasias</h1>
-    <ol class="steps" id="steps" aria-label="Etapas do concurso">
-      <li data-p="inscricoes"><b>1</b>Inscrições</li>
-      <li data-p="votacao"><b>2</b>Votação</li>
-      <li data-p="resultado"><b>3</b>Resultado</li>
-    </ol>
-  </header>
+  <ol class="steps" id="steps" aria-label="Etapas do concurso">
+    <li data-p="inscricoes"><b>1</b>Inscrições</li>
+    <li data-p="votacao"><b>2</b>Votação</li>
+    <li data-p="resultado"><b>3</b>Resultado</li>
+  </ol>
   <main id="main"><p class="lead">Carregando o concurso…</p></main>
 </div>
 
@@ -159,13 +260,14 @@ function montarResultado(res, buscarFoto) {
     return frag;
   }
   const e = res.eleitores;
-  frag.append(el("p", { class: "lead", style: "margin-bottom:1.5rem",
+  frag.append(el("p", { class: "lead", style: "margin:0 auto 1.8rem;text-align:center",
     text: `${e} ${e === 1 ? "aparelho votou" : "aparelhos votaram"}. A classificação usa a média das notas; em caso de empate, vence quem recebeu mais notas.` }));
   const podio = el("div", { class: "podium" });
   res.lista.slice(0, 3).forEach((r, i) => podio.append(el("article", { class: "card p" + (i + 1) },
     el("div", { class: "photo" }, foto(r.fotoId, "Fantasia: " + r.fantasia, buscarFoto)),
     el("div", { class: "body" },
       el("div", { class: "place", text: (i + 1) + "º" }),
+      el("div", { class: "premio", text: ["R$ 300", "R$ 100", "R$ 50"][i] + " no Pix" }),
       el("div", { class: "costume", text: r.fantasia }),
       r.nome ? el("div", { class: "who", text: r.nome }) : null,
       el("p", {}, el("span", { class: "avg", text: r.qtd ? fmt(r.media) : "–" }),
@@ -250,10 +352,10 @@ function render() {
   if (S.fase === "inscricoes") {
     if (S.chave === "insc") { const t = $("#total"); if (t) t.textContent = S.total; return; }
     S.chave = "insc";
-    main.replaceChildren(
+    main.replaceChildren(el("div", { class: "espera" },
       el("h2", { text: "A votação ainda não começou" }),
-      el("p", { class: "lead", text: "As fantasias estão sendo fotografadas. Deixe esta página aberta: as fotos aparecem aqui assim que a votação for liberada." }),
-      el("div", { class: "stats" }, el("div", {}, el("strong", { id: "total", text: String(S.total) }), "fantasias cadastradas")));
+      el("p", { class: "lead", style: "margin:0 auto", text: "As fantasias estão sendo fotografadas. Deixe esta página aberta: as fotos aparecem aqui assim que a votação for liberada." }),
+      el("div", { class: "contador" }, el("strong", { id: "total", text: String(S.total) }), el("span", { text: "fantasias cadastradas" }))));
     return;
   }
   if (S.fase === "votacao") {
