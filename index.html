@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Concurso de Fantasias — Halloween DAF</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F3EEF6; --surface:#FFFFFF; --ink:#2A1736; --muted:#6B5878; --line:#DCCFE5;
+  --accent:#D9620F; --accent-ink:#FFFFFF; --accent-soft:#FBE3CF; --moss:#2F7A5B; --danger:#B3261E;
+  --display:"Pirata One", "Palatino Linotype", Georgia, serif;
+  --body:"Bricolage Grotesque", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#170C21; --surface:#24152F; --ink:#F1E9F5; --muted:#B4A2C2; --line:#3B2752;
+    --accent:#F08A2E; --accent-ink:#1A0D02; --accent-soft:#3D2412; --moss:#6CCB9F; --danger:#FF8A80;
+    color-scheme:dark;
+  }
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+img{max-width:100%;display:block}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1080px;margin:0 auto;padding:1.25rem 1rem 4rem}
+header.top{padding:1.5rem 0 1rem}
+.kicker{color:var(--muted);font-size:.95rem;margin:0}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(3rem,13vw,6.5rem);line-height:.9;margin:.2rem 0 .6rem}
+h2{font-family:var(--display);font-weight:400;font-size:clamp(2rem,7vw,3rem);line-height:1;margin:0 0 .4rem}
+h3{font-size:1.05rem;margin:0}
+p{margin:.3rem 0 0;max-width:62ch}
+.lead{color:var(--muted)}
+.steps{display:flex;gap:.25rem;list-style:none;padding:0;margin:1rem 0 2rem;border-bottom:1px solid var(--line)}
+.steps li{flex:1;padding:.5rem 0 .6rem;color:var(--muted);font-size:.92rem;border-bottom:3px solid transparent;margin-bottom:-1px}
+.steps li.on{color:var(--ink);font-weight:600;border-color:var(--accent)}
+.steps li.done{color:var(--ink)}
+.steps b{font-weight:800;margin-right:.35rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;border:0;border-radius:999px;padding:.8rem 1.4rem;font-weight:600;cursor:pointer;background:var(--accent);color:var(--accent-ink);min-height:48px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn.small{padding:.45rem .9rem;min-height:36px;font-size:.9rem}
+.btn.danger{background:transparent;color:var(--danger);box-shadow:inset 0 0 0 1.5px currentColor}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:1.4rem}
+.notice{padding:1rem 1.2rem;border-radius:14px;background:var(--accent-soft);margin:1rem 0}
+.status{min-height:1.5em;color:var(--muted);font-size:.92rem;margin-top:.6rem}
+.status.err{color:var(--danger)}
+.status.ok{color:var(--moss)}
+.row{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+label.field{display:block;margin-bottom:1rem}
+label.field span{display:block;font-weight:600;font-size:.95rem;margin-bottom:.3rem}
+input[type=text],input[type=password]{width:100%;padding:.75rem .9rem;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);min-height:48px}
+input[type=text]:focus,input[type=password]:focus{border-color:var(--accent);outline:none}
+.drop{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;aspect-ratio:3/4;border:2px dashed var(--line);border-radius:18px;background:var(--bg);cursor:pointer;overflow:hidden;color:var(--muted);padding:1rem}
+.drop:hover{border-color:var(--accent)}
+.drop img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.drop .big{font-family:var(--display);font-size:2.2rem;color:var(--ink);line-height:1}
+.drop input{position:absolute;opacity:0;pointer-events:none}
+.stats{display:flex;gap:2rem;flex-wrap:wrap;margin:1rem 0}
+.stats div{font-size:.9rem;color:var(--muted)}
+.stats strong{display:block;font-family:var(--display);font-size:2.4rem;font-weight:400;color:var(--ink);line-height:1}
+.progress{display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap;margin-bottom:1.2rem}
+.bar{flex-basis:100%;height:6px;border-radius:6px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .3s}
+.grid{display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;display:flex;flex-direction:column}
+.card .photo{position:relative;aspect-ratio:3/4;background:var(--line)}
+.card .photo img{width:100%;height:100%;object-fit:cover}
+.card .tag{position:absolute;left:.7rem;top:.7rem;background:var(--accent);color:var(--accent-ink);font-weight:800;border-radius:999px;padding:.15rem .7rem;font-size:.9rem}
+.card .body{padding:.9rem 1rem 1.1rem}
+.costume{font-family:var(--display);font-size:1.7rem;line-height:1.05}
+.who{color:var(--muted);font-size:.95rem}
+.score{display:grid;grid-template-columns:repeat(10,1fr);gap:.25rem;margin-top:.8rem}
+.score button{border:1.5px solid var(--line);background:transparent;border-radius:10px;min-height:40px;padding:0;font-weight:600;cursor:pointer;font-size:.95rem}
+.score button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.score button.under{border-color:var(--accent)}
+.podium{display:grid;gap:1.25rem;grid-template-columns:1fr;margin-bottom:2rem}
+@media (min-width:760px){.podium{grid-template-columns:1fr 1.25fr 1fr;align-items:end}.podium .p1{order:2}.podium .p2{order:1}.podium .p3{order:3}}
+.place{font-family:var(--display);font-size:3rem;line-height:1;color:var(--accent)}
+.p1 .place{font-size:4.2rem}
+.avg{font-weight:800;font-size:1.3rem}
+.rank{list-style:none;padding:0;margin:0;border-top:1px solid var(--line)}
+.rank li{display:grid;grid-template-columns:2.5rem 56px 1fr auto;gap:.8rem;align-items:center;padding:.7rem 0;border-bottom:1px solid var(--line)}
+.rank img{width:56px;height:72px;object-fit:cover;border-radius:10px;background:var(--line)}
+.rank .n{font-weight:800;color:var(--muted)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <p class="kicker">Festa de Halloween da DAF</p>
+    <h1>Concurso de Fantasias</h1>
+    <ol class="steps" id="steps" aria-label="Etapas do concurso">
+      <li data-p="inscricoes"><b>1</b>Inscrições</li>
+      <li data-p="votacao"><b>2</b>Votação</li>
+      <li data-p="resultado"><b>3</b>Resultado</li>
+    </ol>
+  </header>
+  <main id="main"><p class="lead">Carregando o concurso…</p></main>
+</div>
+
+<script>
+const $ = (s, r = document) => r.querySelector(s);
+function el(tag, attrs = {}, ...kids) {
+  const n = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === "class") n.className = v;
+    else if (k === "text") n.textContent = v;
+    else if (k.startsWith("on")) n.addEventListener(k.slice(2), v);
+    else if (v !== false && v != null) n.setAttribute(k, v === true ? "" : v);
+  }
+  for (const k of kids) if (k != null) n.append(k);
+  return n;
+}
+
+/** Conversa com o Apps Script sem enviar a conta Google do aparelho. */
+async function api(params, corpo) {
+  const url = API + "?api=1&" + new URLSearchParams(params || {}).toString();
+  const opcoes = corpo
+    ? { method: "POST", body: JSON.stringify(corpo), credentials: "omit", redirect: "follow" }
+    : { method: "GET", credentials: "omit", redirect: "follow" };
+  const r = await fetch(corpo ? API : url, opcoes);
+  const j = await r.json();
+  if (!j.ok) throw new Error(j.erro || "Erro no servidor");
+  return j.dados;
+}
+
+/**
+ * Foto do Drive. Tenta o link público; se não carregar,
+ * pede a imagem ao servidor (plano B).
+ */
+function foto(fotoId, alt, buscarNoServidor) {
+  const img = el("img", {
+    src: "https://drive.google.com/thumbnail?id=" + encodeURIComponent(fotoId) + "&sz=w1000",
+    alt: alt || "", loading: "lazy", referrerpolicy: "no-referrer"
+  });
+  let tentouPlanoB = false;
+  img.addEventListener("error", () => {
+    if (tentouPlanoB) return;
+    tentouPlanoB = true;
+    buscarNoServidor(fotoId).then(url => { img.src = url; }).catch(() => { img.alt = "Foto indisponível"; });
+  });
+  return img;
+}
+
+const fmt = n => n.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
+function montarResultado(res, buscarFoto) {
+  const frag = document.createDocumentFragment();
+  if (!res.lista.length) {
+    frag.append(el("p", { class: "lead", text: "Nenhuma fantasia participou do concurso." }));
+    return frag;
+  }
+  const e = res.eleitores;
+  frag.append(el("p", { class: "lead", style: "margin-bottom:1.5rem",
+    text: `${e} ${e === 1 ? "aparelho votou" : "aparelhos votaram"}. A classificação usa a média das notas; em caso de empate, vence quem recebeu mais notas.` }));
+  const podio = el("div", { class: "podium" });
+  res.lista.slice(0, 3).forEach((r, i) => podio.append(el("article", { class: "card p" + (i + 1) },
+    el("div", { class: "photo" }, foto(r.fotoId, "Fantasia: " + r.fantasia, buscarFoto)),
+    el("div", { class: "body" },
+      el("div", { class: "place", text: (i + 1) + "º" }),
+      el("div", { class: "costume", text: r.fantasia }),
+      r.nome ? el("div", { class: "who", text: r.nome }) : null,
+      el("p", {}, el("span", { class: "avg", text: r.qtd ? fmt(r.media) : "–" }),
+        el("span", { class: "who", text: r.qtd ? `  média de ${r.qtd} ${r.qtd === 1 ? "nota" : "notas"}` : "  sem notas" }))))));
+  frag.append(podio);
+  if (res.lista.length > 3) {
+    const ol = el("ol", { class: "rank" });
+    res.lista.slice(3).forEach((r, i) => ol.append(el("li", {},
+      el("span", { class: "n", text: (i + 4) + "º" }),
+      el("div", {}, foto(r.fotoId, "", buscarFoto)),
+      el("div", {}, el("div", { style: "font-weight:600", text: r.fantasia }), r.nome ? el("div", { class: "who", text: r.nome }) : null),
+      el("span", { class: "avg", text: r.qtd ? fmt(r.media) : "–" }))));
+    frag.append(ol);
+  }
+  return frag;
+}
+
+function marcarEtapa(fase) {
+  const ordem = ["inscricoes", "votacao", "resultado"], cur = ordem.indexOf(fase);
+  document.querySelectorAll("#steps li").forEach(li => {
+    const i = ordem.indexOf(li.dataset.p);
+    li.classList.toggle("on", i === cur);
+    li.classList.toggle("done", i < cur);
+    if (i === cur) li.setAttribute("aria-current", "step"); else li.removeAttribute("aria-current");
+  });
+}
+
+function status(msg, tipo) {
+  const s = $("#status"); if (!s) return;
+  s.textContent = msg || ""; s.className = "status" + (tipo ? " " + tipo : "");
+}
+
+function erroTexto(e) {
+  return (e && e.message ? e.message : String(e || "")).replace(/^Exception:\s*/, "") || "Algo deu errado. Tente de novo.";
+}
+</script>
+
+<script>
+// Endereço do Apps Script (URL /exec da implantação)
+const API = "https://script.google.com/macros/s/AKfycbzu3DfzBCnQFqvq73ZFe79V6-bxgG7V3TVa1ugRtjdnbhCvIpZbzHHYov8Ku3s0e3fegg/exec";
+
+const CHAVE_DISP = "fantasias_daf_dispositivo";
+const CHAVE_NOTAS = "fantasias_daf_notas";
+const S = { fase: null, candidatos: [], notas: {}, chave: "", carregouNotas: false };
+
+function idDispositivo() {
+  const gerar = () => (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
+    : "d-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 12) + Math.random().toString(36).slice(2, 12);
+  try {
+    let d = localStorage.getItem(CHAVE_DISP);
+    if (!d) { d = gerar(); localStorage.setItem(CHAVE_DISP, d); }
+    return d;
+  } catch (e) {
+    return window.__disp || (window.__disp = gerar());
+  }
+}
+const DISP = idDispositivo();
+try { S.notas = JSON.parse(localStorage.getItem(CHAVE_NOTAS) || "{}") || {}; } catch (e) {}
+
+const buscarFoto = id => api({ acao: "foto", id }).then(d => d.url);
+
+async function atualizar() {
+  try {
+    const st = await api({ acao: "estado", d: DISP, notas: S.carregouNotas ? "0" : "1" });
+    if (st.minhasNotas) {
+      S.notas = Object.assign({}, st.minhasNotas, S.notas);
+      S.carregouNotas = true;
+    }
+    S.fase = st.fase;
+    S.candidatos = st.candidatos || [];
+    S.total = st.total;
+    S.resultado = st.resultado;
+    render();
+  } catch (e) {
+    if (!S.fase) $("#main").replaceChildren(el("div", { class: "notice", text: "Não foi possível carregar o concurso. Verifique a conexão e recarregue a página." }));
+  }
+}
+
+function render() {
+  marcarEtapa(S.fase);
+  const main = $("#main");
+  if (S.fase === "inscricoes") {
+    if (S.chave === "insc") { const t = $("#total"); if (t) t.textContent = S.total; return; }
+    S.chave = "insc";
+    main.replaceChildren(
+      el("h2", { text: "A votação ainda não começou" }),
+      el("p", { class: "lead", text: "As fantasias estão sendo fotografadas. Deixe esta página aberta: as fotos aparecem aqui assim que a votação for liberada." }),
+      el("div", { class: "stats" }, el("div", {}, el("strong", { id: "total", text: String(S.total) }), "fantasias cadastradas")));
+    return;
+  }
+  if (S.fase === "votacao") {
+    const chave = "vot|" + S.candidatos.map(c => c.id + c.fotoId + c.fantasia + c.nome).join(",");
+    if (chave !== S.chave) {
+      S.chave = chave;
+      if (!S.candidatos.length) {
+        main.replaceChildren(el("h2", { text: "Hora de votar" }), el("p", { class: "lead", text: "Nenhuma fantasia foi cadastrada." }));
+        return;
+      }
+      const grid = el("div", { class: "grid" });
+      S.candidatos.forEach(c => grid.append(cartao(c)));
+      main.replaceChildren(
+        el("h2", { text: "Hora de votar" }),
+        el("p", { class: "lead", text: "Dê uma nota de 1 a 10 para cada fantasia. Suas notas são salvas na hora e você pode mudá-las até a votação fechar." }),
+        el("div", { class: "progress", style: "margin-top:1rem" },
+          el("strong", { id: "prog" }), el("span", { class: "status", id: "status", "aria-live": "polite" }),
+          el("div", { class: "bar" }, el("i", { id: "barra" }))),
+        grid);
+    }
+    pintarNotas();
+    return;
+  }
+  const chave = "res|" + JSON.stringify(S.resultado);
+  if (chave === S.chave) return;
+  S.chave = chave;
+  main.replaceChildren(el("h2", { text: "E a melhor fantasia é…" }), montarResultado(S.resultado, buscarFoto));
+}
+
+function cartao(c) {
+  const notas = el("div", { class: "score", role: "group", "aria-label": "Nota para " + c.fantasia, "data-id": c.id });
+  for (let v = 1; v <= 10; v++) {
+    notas.append(el("button", { type: "button", "data-v": v, "aria-pressed": "false", "aria-label": "Nota " + v, onclick: () => darNota(c.id, v) }, String(v)));
+  }
+  return el("article", { class: "card" },
+    el("div", { class: "photo" }, foto(c.fotoId, "Fantasia: " + c.fantasia, buscarFoto), el("span", { class: "tag", text: "#" + c.numero })),
+    el("div", { class: "body" },
+      el("div", { class: "costume", text: c.fantasia }),
+      c.nome ? el("div", { class: "who", text: c.nome }) : null,
+      notas));
+}
+
+function pintarNotas() {
+  document.querySelectorAll(".score").forEach(g => {
+    const atual = Number(S.notas[g.dataset.id]) || 0;
+    g.querySelectorAll("button").forEach(b => {
+      const v = Number(b.dataset.v);
+      b.setAttribute("aria-pressed", v === atual ? "true" : "false");
+      b.classList.toggle("under", atual > 0 && v < atual);
+    });
+  });
+  const feitas = S.candidatos.filter(c => Number(S.notas[c.id]) > 0).length;
+  const p = $("#prog"), b = $("#barra");
+  if (p) p.textContent = `Você avaliou ${feitas} de ${S.candidatos.length}`;
+  if (b) b.style.width = S.candidatos.length ? (100 * feitas / S.candidatos.length) + "%" : "0";
+}
+
+let timer = null, salvando = false, denovo = false;
+function darNota(id, v) {
+  if (S.fase !== "votacao") return;
+  if (Number(S.notas[id]) === v) delete S.notas[id]; else S.notas[id] = v;
+  try { localStorage.setItem(CHAVE_NOTAS, JSON.stringify(S.notas)); } catch (e) {}
+  pintarNotas();
+  status("Salvando…");
+  clearTimeout(timer);
+  timer = setTimeout(salvar, 800);
+}
+async function salvar() {
+  if (salvando) { denovo = true; return; }
+  salvando = true;
+  try {
+    await api(null, { acao: "votar", dispositivo: DISP, notas: S.notas });
+    status("Notas salvas", "ok");
+  } catch (e) {
+    status(erroTexto(e), "err");
+    if (/não está aberta/.test(erroTexto(e))) atualizar();
+  } finally {
+    salvando = false;
+    if (denovo) { denovo = false; salvar(); }
+  }
+}
+
+atualizar();
+// Confere a etapa periodicamente para mudar de tela sozinho.
+setInterval(() => { if (!document.hidden) atualizar(); }, 25000 + Math.floor(Math.random() * 10000));
+document.addEventListener("visibilitychange", () => { if (!document.hidden) atualizar(); });
+</script>
+</body>
+</html>
