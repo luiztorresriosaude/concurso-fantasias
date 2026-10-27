@@ -189,7 +189,7 @@ function montarResultado(res, buscarFoto) {
   }
   const e = res.eleitores;
   frag.append(el("p", { class: "lead", style: "margin-bottom:1.5rem",
-    text: `${e} ${e === 1 ? "aparelho votou" : "aparelhos votaram"}. A classificação usa a média das notas; em caso de empate, vence quem recebeu mais notas.` }));
+    text: `${e} ${e === 1 ? "pessoa votou" : "pessoas votaram"}. A classificação usa a média das notas; em caso de empate, vence quem recebeu mais notas.` }));
   const podio = el("div", { class: "podium" });
   res.lista.slice(0, 3).forEach((r, i) => podio.append(el("article", { class: "card p" + (i + 1) },
     el("div", { class: "photo" }, foto(r.fotoId, "Fantasia: " + r.fantasia, buscarFoto)),
@@ -275,7 +275,7 @@ function render() {
   $("#main").replaceChildren(
     el("div", { class: "cols" },
       el("div", {}, secaoCadastro(), secaoLista()),
-      el("div", {}, secaoEtapa(), secaoQr(), secaoResultado())));
+      el("div", {}, secaoEtapa(), secaoParticipantes(), secaoQr(), secaoResultado())));
   desenharQr($("#qrmini"), 300);
 }
 
@@ -294,7 +294,7 @@ function secaoEtapa() {
     linha,
     el("div", { class: "stats" },
       el("div", {}, el("strong", { text: String(d.candidatos.length) }), "fantasias"),
-      el("div", {}, el("strong", { text: String(d.resultado.eleitores) }), "aparelhos votaram")),
+      el("div", {}, el("strong", { text: String(d.resultado.eleitores) + (d.participantes ? " / " + d.participantes.length : "") }), "pessoas votaram")),
     el("div", { class: "row" },
       el("a", { class: "btn ghost small", href: d.planilhaUrl, target: "_blank", rel: "noopener" }, "Abrir planilha de dados"),
       el("button", { class: "btn danger small", type: "button", onclick: zerarVotos }, "Apagar todos os votos")));
@@ -333,7 +333,8 @@ function secaoCadastro() {
     el("label", { class: "btn ghost small", for: "fotoGaleria" }, "Escolher da galeria"),
     galeria);
   const fantasia = el("input", { type: "text", id: "fantasia", maxlength: "80", placeholder: "Ex.: Noiva do Cemitério", value: ed ? ed.fantasia : "" });
-  const nome = el("input", { type: "text", id: "nome", maxlength: "60", placeholder: "Opcional", value: ed ? ed.nome : "" });
+  const nome = el("input", { type: "text", id: "nome", maxlength: "60", placeholder: "Comece a digitar e escolha da lista", list: "listaParticipantes", value: ed ? ed.nome : "" });
+  const sugestoes = el("datalist", { id: "listaParticipantes" }, ...(S.dados.participantes || []).map(n => el("option", { value: n })));
   const botao = el("button", { class: "btn", type: "button", id: "salvar", onclick: () => salvarCandidato(ed) }, ed ? "Salvar alterações" : "Cadastrar candidatura");
   return el("section", { class: "panel" },
     el("h2", { text: ed ? "Editar #" + ed.numero : "Nova candidatura" }),
@@ -341,7 +342,8 @@ function secaoCadastro() {
       el("div", {}, drop, botoesFoto),
       el("div", {},
         el("label", { class: "field" }, el("span", { text: "Nome da fantasia" }), fantasia),
-        el("label", { class: "field" }, el("span", { text: "Nome da pessoa" }), nome),
+        el("label", { class: "field" }, el("span", { text: "Nome da pessoa" }), nome, sugestoes),
+        el("p", { class: "who", style: "margin:-.6rem 0 1rem", text: "Use o nome igual ao da lista de participantes: assim a pessoa não consegue votar na própria fantasia." }),
         el("div", { class: "row" }, botao,
           ed ? el("button", { class: "btn ghost", type: "button", onclick: () => { S.editando = null; render(); } }, "Cancelar") : null),
         el("p", { class: "status", id: "status", "aria-live": "polite" }))));
@@ -358,6 +360,40 @@ function secaoLista() {
   return el("section", { class: "panel" },
     el("h3", { text: "Candidaturas cadastradas" }),
     S.dados.candidatos.length ? lista : el("p", { class: "lead", text: "Nenhuma ainda. Cadastre a primeira fantasia acima." }));
+}
+
+function secaoParticipantes() {
+  const d = S.dados;
+  const lista = d.participantes || [];
+  const votantes = d.votantes || [];
+  const caixa = el("textarea", { id: "participantes", rows: "8", style: "width:100%;padding:.75rem .9rem;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);font:inherit;resize:vertical",
+    placeholder: "Um nome por linha" });
+  caixa.value = lista.join("\n");
+  const salvar = el("button", { class: "btn small", type: "button", onclick: async () => {
+    if (!confirm("Salvar a lista de participantes?")) return;
+    salvar.disabled = true;
+    try { S.dados = await servidor("adminSalvarParticipantes", S.pin, caixa.value); render(); }
+    catch (e) { alert(erroTexto(e)); salvar.disabled = false; }
+  } }, "Salvar lista");
+  const ul = el("ul", { class: "lista" });
+  votantes.forEach(v => ul.append(el("li", { style: "grid-template-columns:1fr auto" },
+    el("div", {}, el("div", { style: "font-weight:600", text: v.nome }),
+      el("div", { class: "who", text: v.enviadoEm ? "Enviou às " + new Date(v.enviadoEm).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) : "" })),
+    el("button", { class: "btn danger small", type: "button", onclick: () => liberar(v.nome) }, "Liberar novo voto"))));
+  return el("section", { class: "panel" },
+    el("h3", { text: `Participantes (${lista.length})` }),
+    el("p", { class: "who", text: "Estes nomes aparecem na lista suspensa da votação. Cole um nome por linha; repetidos são ignorados." }),
+    el("div", { style: "margin-top:.8rem" }, caixa),
+    el("div", { class: "row", style: "margin-top:.6rem" }, salvar),
+    el("h3", { style: "margin-top:1.5rem", text: `Já votaram (${votantes.length})` }),
+    el("p", { class: "who", text: "“Liberar novo voto” apaga o voto da pessoa para ela votar de novo, por exemplo, se trocou de celular." }),
+    votantes.length ? ul : el("p", { class: "lead", text: "Ninguém votou ainda." }));
+}
+
+async function liberar(nome) {
+  if (!confirm(`Apagar o voto de ${nome} para que vote de novo?`)) return;
+  try { S.dados = await servidor("adminLiberarVoto", S.pin, nome); render(); }
+  catch (e) { alert(erroTexto(e)); }
 }
 
 function secaoResultado() {
@@ -439,6 +475,8 @@ document.addEventListener("keydown", e => { if (e.key === "Escape") $("#qr").hid
 setInterval(async () => {
   if (!S.dados || document.hidden || S.ocupado || S.arquivo || S.editando) return;
   const f = $("#fantasia"); if (f && f.value.trim()) return;
+  const lp = $("#participantes"); if (lp && document.activeElement === lp) return;
+  if (lp && lp.value !== (S.dados.participantes || []).join("\n")) return;
   try { S.dados = await servidor("adminEstado", S.pin); render(); } catch (e) {}
 }, 30000);
 
