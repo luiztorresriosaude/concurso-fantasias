@@ -135,6 +135,37 @@ main > h2, main > .lead{text-align:center;margin-left:auto;margin-right:auto}
 .teia{position:fixed;bottom:0;width:150px;opacity:.16;pointer-events:none;stroke:#e9dcff;fill:none;stroke-width:1}
 .teia.esq{left:0}.teia.dir{right:0;transform:scaleX(-1)}
 @media (max-width:640px){.teia{width:90px}}
+
+/* login, confirmação e barra de envio */
+.painel{max-width:560px;margin:0 auto;padding:1.6rem 1.4rem;text-align:center;border-radius:22px;background:linear-gradient(180deg,var(--card-2),var(--card));border:1px solid rgba(255,79,216,.35);box-shadow:0 10px 40px rgba(0,0,0,.35)}
+.painel .lead{margin:.4rem auto 0}
+.campo{display:block;text-align:left;margin-top:1rem}
+.campo span{display:block;font-weight:600;font-size:1rem;color:var(--suave);margin-bottom:.3rem}
+.campo input,.campo select{width:100%;min-height:52px;padding:.7rem .9rem;border-radius:14px;border:1.5px solid rgba(255,255,255,.2);background:#120822;color:var(--texto);font:inherit;font-size:1.15rem}
+.campo input:focus,.campo select:focus{outline:none;border-color:var(--rosa);box-shadow:0 0 12px rgba(255,79,216,.45)}
+.btn-neon{display:inline-flex;align-items:center;justify-content:center;min-height:54px;padding:.7rem 2.2rem;margin-top:1.3rem;border:0;border-radius:999px;cursor:pointer;
+  font-family:var(--cond);font-weight:700;font-size:1.35rem;letter-spacing:.06em;color:#1b0a00;background:linear-gradient(90deg,var(--ouro),#ffd27a);box-shadow:0 0 18px rgba(255,179,71,.7)}
+.btn-neon:disabled{opacity:.6;cursor:wait}
+.btn-contorno{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:.6rem 1.6rem;margin-top:1.3rem;border-radius:999px;cursor:pointer;
+  font-family:var(--cond);font-weight:700;font-size:1.15rem;background:transparent;color:var(--rosa-claro);border:2px solid var(--rosa);box-shadow:0 0 12px rgba(255,79,216,.4)}
+.link{background:none;border:0;padding:.3rem;cursor:pointer;color:var(--suave);text-decoration:underline;font:inherit;font-size:1rem}
+.dica{font-size:1rem;color:var(--suave);margin:1rem auto 0}
+.login .status{text-align:center;margin:.6rem auto 0}
+.eu{display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:.2rem .8rem;margin:0 auto 1.2rem;text-align:center;color:var(--suave)}
+.eu strong{color:#fff}
+.selo{width:84px;height:84px;margin:0 auto .8rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.6rem;font-weight:700;
+  color:#1a2b00;background:var(--lima);box-shadow:0 0 22px rgba(195,255,61,.8),0 0 60px rgba(195,255,61,.35)}
+.selo.alerta{background:var(--ouro);color:#2a1300;box-shadow:0 0 22px rgba(255,179,71,.8)}
+.confirmado{border-color:rgba(195,255,61,.55)}
+@media (prefers-reduced-motion: no-preference){.recem .selo{animation:pulo .6s cubic-bezier(.2,1.6,.4,1) both}@keyframes pulo{from{transform:scale(.3);opacity:0}to{transform:none;opacity:1}}}
+.propria{margin-top:.8rem;font-size:1rem;color:var(--suave)}
+.barra-envio{position:fixed;left:0;right:0;bottom:0;z-index:5;display:flex;align-items:center;gap:1rem;padding:.7rem max(1rem,calc(50% - 520px)) calc(.7rem + env(safe-area-inset-bottom,0px));
+  background:rgba(18,8,34,.94);border-top:1px solid rgba(255,79,216,.4);box-shadow:0 -8px 30px rgba(0,0,0,.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.barra-info{flex:1;min-width:0;text-align:left}
+.barra-info .bar{margin:.35rem 0 .1rem}
+.barra-info .status{display:block;min-height:1.2em;font-size:.95rem}
+.barra-envio .btn-neon{margin:0;padding:.6rem 1.6rem;flex:none}
+body.com-barra{padding-bottom:calc(7rem + env(safe-area-inset-bottom,0px))}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 </style>
 
@@ -261,7 +292,7 @@ function montarResultado(res, buscarFoto) {
   }
   const e = res.eleitores;
   frag.append(el("p", { class: "lead", style: "margin:0 auto 1.8rem;text-align:center",
-    text: `${e} ${e === 1 ? "aparelho votou" : "aparelhos votaram"}. A classificação usa a média das notas; em caso de empate, vence quem recebeu mais notas.` }));
+    text: `${e} ${e === 1 ? "pessoa votou" : "pessoas votaram"}. A classificação usa a média das notas; em caso de empate, vence quem recebeu mais notas.` }));
   const podio = el("div", { class: "podium" });
   res.lista.slice(0, 3).forEach((r, i) => podio.append(el("article", { class: "card p" + (i + 1) },
     el("div", { class: "photo" }, foto(r.fotoId, "Fantasia: " + r.fantasia, buscarFoto)),
@@ -310,138 +341,265 @@ function erroTexto(e) {
 const API = "https://script.google.com/macros/s/AKfycbzu3DfzBCnQFqvq73ZFe79V6-bxgG7V3TVa1ugRtjdnbhCvIpZbzHHYov8Ku3s0e3fegg/exec";
 
 const CHAVE_DISP = "fantasias_daf_dispositivo";
-const CHAVE_NOTAS = "fantasias_daf_notas";
-const S = { fase: null, candidatos: [], notas: {}, chave: "", carregouNotas: false };
+const CHAVE_NOME = "fantasias_daf_participante";
+const CHAVE_RASCUNHO = "fantasias_daf_rascunho";
+
+const S = {
+  fase: null, total: 0, candidatos: [], participantes: [], resultado: null,
+  eu: null, meuVoto: undefined, rascunho: {}, tela: null, editando: false, chave: "", enviando: false
+};
+
+/* ---------- Armazenamento local (com proteção) ---------- */
+const ler = (k, padrao) => { try { const v = localStorage.getItem(k); return v == null ? padrao : JSON.parse(v); } catch (e) { return padrao; } };
+const gravar = (k, v) => { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
 
 function idDispositivo() {
   const gerar = () => (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
     : "d-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 12) + Math.random().toString(36).slice(2, 12);
-  try {
-    let d = localStorage.getItem(CHAVE_DISP);
-    if (!d) { d = gerar(); localStorage.setItem(CHAVE_DISP, d); }
-    return d;
-  } catch (e) {
-    return window.__disp || (window.__disp = gerar());
-  }
+  let d = ler(CHAVE_DISP, null);
+  if (!d) { d = gerar(); gravar(CHAVE_DISP, d); }
+  return d;
 }
 const DISP = idDispositivo();
-try { S.notas = JSON.parse(localStorage.getItem(CHAVE_NOTAS) || "{}") || {}; } catch (e) {}
+S.eu = ler(CHAVE_NOME, null);
+S.rascunho = ler(CHAVE_RASCUNHO, {}) || {};
 
+const chave = n => String(n || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/\s+/g, " ").trim();
 const buscarFoto = id => api({ acao: "foto", id }).then(d => d.url);
+const minhaFantasia = c => S.eu && chave(c.nome) && chave(c.nome) === chave(S.eu);
+const votaveis = () => S.candidatos.filter(c => !minhaFantasia(c));
 
-async function atualizar() {
+/* ---------- Comunicação ---------- */
+async function atualizar(comVoto) {
   try {
-    const st = await api({ acao: "estado", d: DISP, notas: S.carregouNotas ? "0" : "1" });
-    if (st.minhasNotas) {
-      S.notas = Object.assign({}, st.minhasNotas, S.notas);
-      S.carregouNotas = true;
-    }
+    const params = { acao: "estado", d: DISP };
+    if (S.eu) params.n = S.eu;
+    if (comVoto) params.m = "1";
+    const st = await api(params);
     S.fase = st.fase;
-    S.candidatos = st.candidatos || [];
     S.total = st.total;
-    S.resultado = st.resultado;
+    S.candidatos = st.candidatos || [];
+    S.resultado = st.resultado || null;
+    if (st.participantes) S.participantes = st.participantes;
+    if (S.eu && st.fase === "votacao" && st.participante === null) sair(true); // nome removido da lista
+    if (comVoto && "meuVoto" in st) S.meuVoto = st.meuVoto;
     render();
   } catch (e) {
     if (!S.fase) $("#main").replaceChildren(el("div", { class: "notice", text: "Não foi possível carregar o concurso. Verifique a conexão e recarregue a página." }));
   }
 }
 
+/* ---------- Telas ---------- */
+function definirTela() {
+  if (S.fase === "inscricoes") return "espera";
+  if (S.fase === "resultado") return "resultado";
+  if (!S.eu) return "login";
+  if (S.meuVoto === undefined) return "carregando";
+  if (S.meuVoto && S.meuVoto.outroAparelho) return "bloqueado";
+  if (S.meuVoto && !S.editando) return "enviado";
+  return "votar";
+}
+
 function render() {
   marcarEtapa(S.fase);
+  const tela = definirTela();
+  const extra = tela === "votar" ? S.candidatos.map(c => c.id + c.fotoId + c.fantasia + c.nome).join(",")
+    : tela === "resultado" ? JSON.stringify(S.resultado)
+    : tela === "login" ? S.participantes.join("|")
+    : tela === "enviado" ? String(S.meuVoto && S.meuVoto.enviadoEm) : "";
+  const k = tela + "|" + (S.eu || "") + "|" + extra;
+  if (tela === "espera" && S.chave.startsWith("espera|")) { const t = $("#total"); if (t) t.textContent = S.total; return; }
+  if (k === S.chave) { if (tela === "votar") pintarNotas(); return; }
+  S.chave = k;
   const main = $("#main");
-  if (S.fase === "inscricoes") {
-    if (S.chave === "insc") { const t = $("#total"); if (t) t.textContent = S.total; return; }
-    S.chave = "insc";
-    main.replaceChildren(el("div", { class: "espera" },
-      el("h2", { text: "A votação ainda não começou" }),
-      el("p", { class: "lead", style: "margin:0 auto", text: "As fantasias estão sendo fotografadas. Deixe esta página aberta: as fotos aparecem aqui assim que a votação for liberada." }),
-      el("div", { class: "contador" }, el("strong", { id: "total", text: String(S.total) }), el("span", { text: "fantasias cadastradas" }))));
+  document.body.classList.toggle("com-barra", tela === "votar");
+  ({ espera: telaEspera, resultado: telaResultado, login: telaLogin, carregando: telaCarregando,
+     bloqueado: telaBloqueado, enviado: telaEnviado, votar: telaVotar })[tela](main);
+}
+
+function telaEspera(main) {
+  main.replaceChildren(el("div", { class: "espera" },
+    el("h2", { text: "A votação ainda não começou" }),
+    el("p", { class: "lead", style: "margin:0 auto", text: "As fantasias estão sendo fotografadas. Deixe esta página aberta: a votação aparece aqui assim que for liberada." }),
+    el("div", { class: "contador" }, el("strong", { id: "total", text: String(S.total) }), el("span", { text: "fantasias cadastradas" }))));
+}
+
+function telaCarregando(main) {
+  main.replaceChildren(el("p", { class: "lead", style: "text-align:center;margin:2rem auto", text: "Conferindo seu voto…" }));
+}
+
+function telaLogin(main) {
+  if (!S.participantes.length) {
+    main.replaceChildren(el("div", { class: "notice", text: "A lista de participantes ainda não foi cadastrada. Procure a organização." }));
     return;
   }
-  if (S.fase === "votacao") {
-    const chave = "vot|" + S.candidatos.map(c => c.id + c.fotoId + c.fantasia + c.nome).join(",");
-    if (chave !== S.chave) {
-      S.chave = chave;
-      if (!S.candidatos.length) {
-        main.replaceChildren(el("h2", { text: "Hora de votar" }), el("p", { class: "lead", text: "Nenhuma fantasia foi cadastrada." }));
-        return;
-      }
-      const grid = el("div", { class: "grid" });
-      S.candidatos.forEach(c => grid.append(cartao(c)));
-      main.replaceChildren(
-        el("h2", { text: "Hora de votar" }),
-        el("p", { class: "lead", text: "Dê uma nota de 1 a 10 para cada fantasia. Suas notas são salvas na hora e você pode mudá-las até a votação fechar." }),
-        el("div", { class: "progress", style: "margin-top:1rem" },
-          el("strong", { id: "prog" }), el("span", { class: "status", id: "status", "aria-live": "polite" }),
-          el("div", { class: "bar" }, el("i", { id: "barra" }))),
-        grid);
-    }
-    pintarNotas();
+  const busca = el("input", { type: "search", id: "busca", placeholder: "Digite parte do seu nome", autocomplete: "off", "aria-label": "Buscar nome" });
+  const lista = el("select", { id: "nome", "aria-label": "Seu nome" });
+  const preencher = () => {
+    const q = chave(busca.value);
+    const nomes = S.participantes.filter(n => !q || chave(n).includes(q));
+    lista.replaceChildren(el("option", { value: "", text: nomes.length ? "Escolha seu nome" : "Nenhum nome encontrado" }),
+      ...nomes.map(n => el("option", { value: n, text: n })));
+    if (nomes.length === 1) lista.value = nomes[0];
+  };
+  busca.addEventListener("input", preencher);
+  preencher();
+  const entrar = el("button", { class: "btn-neon", type: "button", onclick: () => {
+    const n = lista.value;
+    if (!n) { status("Escolha seu nome na lista.", "err"); lista.focus(); return; }
+    S.eu = n; gravar(CHAVE_NOME, n);
+    S.meuVoto = undefined; S.editando = false; S.rascunho = {}; gravar(CHAVE_RASCUNHO, null);
+    render(); atualizar(true);
+  } }, "Entrar");
+  main.replaceChildren(el("div", { class: "painel login" },
+    el("h2", { text: "Quem está votando?" }),
+    el("p", { class: "lead", text: "Escolha seu nome na lista de convidados da festa." }),
+    el("label", { class: "campo" }, el("span", { text: "Buscar" }), busca),
+    el("label", { class: "campo" }, el("span", { text: "Seu nome" }), lista),
+    entrar,
+    el("p", { class: "status", id: "status", "aria-live": "polite" }),
+    el("p", { class: "dica", text: "Não encontrou seu nome? Procure a organização da festa." })));
+}
+
+function cabecalhoEu() {
+  return el("div", { class: "eu" },
+    el("span", {}, "Votando como ", el("strong", { text: S.eu })),
+    el("button", { class: "link", type: "button", onclick: () => sair() }, "Não é você? Trocar nome"));
+}
+
+function sair(silencioso) {
+  S.eu = null; S.meuVoto = undefined; S.editando = false; S.rascunho = {};
+  gravar(CHAVE_NOME, null); gravar(CHAVE_RASCUNHO, null);
+  if (!silencioso) render();
+}
+
+function horario(iso) {
+  const d = new Date(iso);
+  return isNaN(d) ? "" : d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+}
+
+function telaBloqueado(main) {
+  main.replaceChildren(el("div", { class: "painel aviso" },
+    el("div", { class: "selo alerta", "aria-hidden": "true", text: "!" }),
+    el("h2", { text: "Este nome já votou" }),
+    el("p", { class: "lead", text: `${S.eu} já enviou um voto em outro aparelho${S.meuVoto.enviadoEm ? " às " + horario(S.meuVoto.enviadoEm) : ""}.` }),
+    el("p", { class: "lead", text: "Se foi você em outro celular, procure a organização para liberar um novo voto." }),
+    el("button", { class: "btn-contorno", type: "button", onclick: () => sair() }, "Não sou eu. Trocar nome")));
+}
+
+function telaEnviado(main) {
+  const qtd = Object.keys(S.meuVoto.notas || {}).length;
+  const recem = S.acabouDeEnviar; S.acabouDeEnviar = false;
+  main.replaceChildren(el("div", { class: "painel confirmado" + (recem ? " recem" : "") },
+    el("div", { class: "selo", "aria-hidden": "true", text: "✓" }),
+    el("h2", { text: recem ? "Voto enviado!" : "Seu voto já foi registrado" }),
+    el("p", { class: "lead", text: `Obrigado, ${S.eu.split(" ")[0]}! Você deu nota para ${qtd} ${qtd === 1 ? "fantasia" : "fantasias"}${S.meuVoto.enviadoEm ? ", às " + horario(S.meuVoto.enviadoEm) : ""}.` }),
+    el("p", { class: "lead", text: "Você pode mudar seu voto até a organização encerrar a votação. O resultado aparece nesta página." }),
+    el("button", { class: "btn-contorno", type: "button", onclick: () => {
+      S.editando = true; S.rascunho = Object.assign({}, S.meuVoto.notas); gravar(CHAVE_RASCUNHO, S.rascunho); render();
+    } }, "Mudar meu voto"),
+    el("button", { class: "link", type: "button", style: "display:block;margin:1rem auto 0", onclick: () => sair() }, "Não é você? Trocar nome")));
+}
+
+function telaVotar(main) {
+  if (!S.candidatos.length) {
+    main.replaceChildren(cabecalhoEu(), el("h2", { text: "Hora de votar" }), el("p", { class: "lead", text: "Nenhuma fantasia foi cadastrada." }));
     return;
   }
-  const chave = "res|" + JSON.stringify(S.resultado);
-  if (chave === S.chave) return;
-  S.chave = chave;
-  main.replaceChildren(el("h2", { text: "E a melhor fantasia é…" }), montarResultado(S.resultado, buscarFoto));
+  const grid = el("div", { class: "grid" });
+  S.candidatos.forEach(c => grid.append(cartao(c)));
+  const barra = el("div", { class: "barra-envio" },
+    el("div", { class: "barra-info" },
+      el("strong", { id: "prog" }),
+      el("div", { class: "bar" }, el("i", { id: "barra" })),
+      el("span", { class: "status", id: "status", "aria-live": "polite" })),
+    el("button", { class: "btn-neon", type: "button", id: "enviar", onclick: enviar }, "ENVIAR"));
+  main.replaceChildren(
+    cabecalhoEu(),
+    el("h2", { text: S.editando ? "Mudando seu voto" : "Hora de votar" }),
+    el("p", { class: "lead", text: "Dê uma nota de 1 a 10 para cada fantasia e toque em ENVIAR no fim. Suas notas só valem depois de enviadas." }),
+    grid, barra);
+  pintarNotas();
 }
 
 function cartao(c) {
-  const notas = el("div", { class: "score", role: "group", "aria-label": "Nota para " + c.fantasia, "data-id": c.id });
-  for (let v = 1; v <= 10; v++) {
-    notas.append(el("button", { type: "button", "data-v": v, "aria-pressed": "false", "aria-label": "Nota " + v, onclick: () => darNota(c.id, v) }, String(v)));
+  const corpo = el("div", { class: "body" },
+    el("div", { class: "costume", text: c.fantasia }),
+    c.nome ? el("div", { class: "who", text: c.nome }) : null);
+  if (minhaFantasia(c)) {
+    corpo.append(el("p", { class: "propria", text: "Esta é a sua fantasia. Não dá para votar em si mesmo." }));
+  } else {
+    const notas = el("div", { class: "score", role: "group", "aria-label": "Nota para " + c.fantasia, "data-id": c.id });
+    for (let v = 1; v <= 10; v++) {
+      notas.append(el("button", { type: "button", "data-v": v, "aria-pressed": "false", "aria-label": "Nota " + v, onclick: () => darNota(c.id, v) }, String(v)));
+    }
+    corpo.append(notas);
   }
   return el("article", { class: "card" },
     el("div", { class: "photo" }, foto(c.fotoId, "Fantasia: " + c.fantasia, buscarFoto), el("span", { class: "tag", text: "#" + c.numero })),
-    el("div", { class: "body" },
-      el("div", { class: "costume", text: c.fantasia }),
-      c.nome ? el("div", { class: "who", text: c.nome }) : null,
-      notas));
+    corpo);
+}
+
+function darNota(id, v) {
+  if (Number(S.rascunho[id]) === v) delete S.rascunho[id]; else S.rascunho[id] = v;
+  gravar(CHAVE_RASCUNHO, S.rascunho);
+  status("");
+  pintarNotas();
 }
 
 function pintarNotas() {
   document.querySelectorAll(".score").forEach(g => {
-    const atual = Number(S.notas[g.dataset.id]) || 0;
+    const atual = Number(S.rascunho[g.dataset.id]) || 0;
     g.querySelectorAll("button").forEach(b => {
       const v = Number(b.dataset.v);
       b.setAttribute("aria-pressed", v === atual ? "true" : "false");
       b.classList.toggle("under", atual > 0 && v < atual);
     });
   });
-  const feitas = S.candidatos.filter(c => Number(S.notas[c.id]) > 0).length;
+  const lista = votaveis();
+  const feitas = lista.filter(c => Number(S.rascunho[c.id]) > 0).length;
   const p = $("#prog"), b = $("#barra");
-  if (p) p.textContent = `Você avaliou ${feitas} de ${S.candidatos.length}`;
-  if (b) b.style.width = S.candidatos.length ? (100 * feitas / S.candidatos.length) + "%" : "0";
+  if (p) p.textContent = `${feitas} de ${lista.length} avaliadas`;
+  if (b) b.style.width = lista.length ? (100 * feitas / lista.length) + "%" : "0";
 }
 
-let timer = null, salvando = false, denovo = false;
-function darNota(id, v) {
-  if (S.fase !== "votacao") return;
-  if (Number(S.notas[id]) === v) delete S.notas[id]; else S.notas[id] = v;
-  try { localStorage.setItem(CHAVE_NOTAS, JSON.stringify(S.notas)); } catch (e) {}
-  pintarNotas();
-  status("Salvando…");
-  clearTimeout(timer);
-  timer = setTimeout(salvar, 800);
-}
-async function salvar() {
-  if (salvando) { denovo = true; return; }
-  salvando = true;
+async function enviar() {
+  if (S.enviando) return;
+  const lista = votaveis();
+  const notas = {};
+  lista.forEach(c => { const v = Number(S.rascunho[c.id]); if (v >= 1 && v <= 10) notas[c.id] = v; });
+  const qtd = Object.keys(notas).length;
+  if (!qtd) { status("Dê pelo menos uma nota antes de enviar.", "err"); return; }
+  const faltam = lista.length - qtd;
+  if (faltam > 0 && !confirm(`Você não deu nota para ${faltam} ${faltam === 1 ? "fantasia" : "fantasias"}. Enviar assim mesmo?`)) return;
+  S.enviando = true;
+  const botao = $("#enviar"); if (botao) { botao.disabled = true; botao.textContent = "ENVIANDO…"; }
   try {
-    await api(null, { acao: "votar", dispositivo: DISP, notas: S.notas });
-    status("Notas salvas", "ok");
+    const r = await api(null, { acao: "votar", dispositivo: DISP, participante: S.eu, notas });
+    S.meuVoto = { outroAparelho: false, enviadoEm: r.enviadoEm, notas: r.notas };
+    S.editando = false; S.acabouDeEnviar = true;
+    S.rascunho = {}; gravar(CHAVE_RASCUNHO, null);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    render();
   } catch (e) {
-    status(erroTexto(e), "err");
-    if (/não está aberta/.test(erroTexto(e))) atualizar();
+    const msg = erroTexto(e);
+    status(msg, "err");
+    if (/outro aparelho/.test(msg)) { S.meuVoto = undefined; atualizar(true); }
+    else if (/não está aberta/.test(msg)) atualizar(false);
   } finally {
-    salvando = false;
-    if (denovo) { denovo = false; salvar(); }
+    S.enviando = false;
+    const b2 = $("#enviar"); if (b2) { b2.disabled = false; b2.textContent = "ENVIAR"; }
   }
 }
 
-atualizar();
-// Confere a etapa periodicamente para mudar de tela sozinho.
-setInterval(() => { if (!document.hidden) atualizar(); }, 25000 + Math.floor(Math.random() * 10000));
-document.addEventListener("visibilitychange", () => { if (!document.hidden) atualizar(); });
+function telaResultado(main) {
+  main.replaceChildren(el("h2", { text: "E a melhor fantasia é…" }), montarResultado(S.resultado, buscarFoto));
+}
+
+/* ---------- Início ---------- */
+atualizar(true);
+setInterval(() => { if (!document.hidden) atualizar(S.eu && S.meuVoto === undefined); }, 25000 + Math.floor(Math.random() * 10000));
+document.addEventListener("visibilitychange", () => { if (!document.hidden) atualizar(false); });
 </script>
 </body>
 </html>
